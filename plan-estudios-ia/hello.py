@@ -4,25 +4,8 @@ from dicc_converter import lista_a_dicc
 from config import PREGUNTAS_AISLADAS , RESPUESTAS_DIC
 from Deepseek import Open_IA, Open_IA_eval, Open_IA_nivel
 import re
-dic = {}
-# def funcion_ruta2(dic):  #Funcion que debe correr dentro de la ruta 2
-    
-#     if request.method == "POST":
-#       for i in range(len(PREGUNTAS_AISLADAS)):
-#           respuesta = request.form.get(f"respuesta{i}")
-#           dic[PREGUNTAS_AISLADAS[i]] = respuesta
-#       return redirect(url_for("part3"))
-    
-
-# preguntas_de_la_IA = [{'role': 'system', 'content': 'generas 5 preguntas simples(solo las preguntas) sobre python'}, 
-#              {
-#                  'role': 'assistant', 
-#                  'content': '1. ¿Qué es Python y para qué se utiliza?  \n2. ¿Cuál es la diferencia entre una lista y una tupla en Python?  \n3. ¿Cómo se define una función en Python?  \n4. ¿Qué tipos de bucles existen en Python y cómo funcionan?  \n5. ¿Qué es un módulo en Python y cómo se importa?'
-                 
-                 
-#                  }]
-    
-# preguntas = preguntas_de_la_IA[1]['content']
+dic = {} #diccionario donde se guardaran [ { pregunta:respuesta }] para enviar a la IA y evaluar
+#Definimos un promp predeterminado para que al iniciar el proceso este se envie a la IA 
 promp_default = "generas 5 preguntas simple sobre python(solo preguntas) para evaluar el nivel"
 preguntas_ia = Open_IA(promp_default)
 PREGUNTAS_AISLADAS = re.findall(r"\d+[.] (.+)",preguntas_ia)
@@ -39,7 +22,7 @@ def index():
 # va a recibir
 
 
-#Creamos la ruta '/contacto' y se pasamos la variable de tipo String 'nombre'
+#Creamos la ruta '/contacto' donde se ejecutan las preguntas para que el ususario las responda
 @app.route("/Parte2.html",methods = ["GET","POST"])
 def contacto():
   if request.method == "POST":
@@ -54,7 +37,6 @@ def contacto():
 
 @app.route("/part3")
 def part3():
-    # evaluacion_IA_nivel = Open_IA_nivel(dic)
     evaluacion_IA_plan = Open_IA_eval(dic)
     print(evaluacion_IA_plan)
 
